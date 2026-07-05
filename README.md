@@ -22,7 +22,6 @@ STHet-MoE/
 |-- utils/
 |   |-- data_loader.py         # Dataset loading and temporal feature construction
 |   `-- metrics.py             # Accuracy and fairness-aware metrics
-`-- scripts/ablations/         # Shell scripts for ablation experiments
 ```
 
 ## Requirements
@@ -104,14 +103,13 @@ Outputs are written to:
 
 Both directories are ignored by git.
 
-## Ablation Experiments
+## Ablation Options
 
-Ablation scripts are provided in `scripts/ablations/`. Examples:
+The ablation switches are exposed directly through `train.py`. Example:
 
 ```bash
-bash scripts/ablations/train_bohai_full.sh
-bash scripts/ablations/train_nanhai_no_moe.sh
-bash scripts/ablations/train_nanhai_no_graph_conv.sh
+python train.py --dataset bohai --no_moe
+python train.py --dataset nanhai --no_graph_conv
 ```
 
 Supported ablation flags include:
