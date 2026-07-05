@@ -2,7 +2,7 @@
 
 Spatio-Temporal Heterogeneity-Aware Mixture-of-Experts for Satellite-Derived Marine Chlorophyll-a Forecasting
 
-Core implementation for the paper code of STHet-MoE, a heterogeneous mixture-of-experts model for fair spatial-temporal forecasting on ocean chlorophyll concentration data.
+Core implementation for the paper code of STHet-MoE, a heterogeneous mixture-of-experts model for node-balanced spatio-temporal forecasting on ocean chlorophyll concentration data.
 
 The repository keeps only the source code needed for model definition, training, evaluation, and ablation runs. Datasets, checkpoints, logs, prediction archives, and generated figures are intentionally excluded.
 
@@ -16,9 +16,9 @@ STHet-MoE/
 |-- test_model.py              # Lightweight model instantiation smoke test
 |-- requirements.txt           # Python dependencies
 |-- models/
-|   |-- higcn.py               # Heterogeneity-informed graph convolution
+|   |-- sthet_gcn.py           # Spatio-temporal heterogeneity-aware graph convolution
 |   |-- tcn.py                 # Multi-scale temporal convolution
-|   `-- himoe.py               # HiMoE / node-wise MoE model
+|   `-- sthet_moe.py           # STHet-MoE / node-wise MoE model
 |-- utils/
 |   |-- data_loader.py         # Dataset loading and temporal feature construction
 |   `-- metrics.py             # Accuracy and fairness-aware metrics

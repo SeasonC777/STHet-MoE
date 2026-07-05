@@ -1,16 +1,16 @@
-"""
-HiMoE: Heterogeneity-Informed Mixture-of-Experts
+﻿"""
+STHet-MoE: Spatio-Temporal Heterogeneity-Aware Mixture-of-Experts
 """
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from models.higcn import HiGCN
+from models.sthet_gcn import STHetGCN
 from models.tcn import TemporalConvNet
 
 
 class ExpertModel(nn.Module):
     """
-    Single expert model: 4 layers of HiGCN + TCN
+    Single expert model: 4 layers of STHetGCN + TCN
     """
     def __init__(self, in_dim, hidden_dim, static_adj, num_layers=4,
                  kernel_size=(3, 5, 7), temporal_dilations=(1, 2, 3),
@@ -20,16 +20,16 @@ class ExpertModel(nn.Module):
         self.num_layers = num_layers
         self.use_tcn = use_tcn
 
-        # Build layers alternating HiGCN and TCN
+        # Build layers alternating STHetGCN and TCN
         self.layers = nn.ModuleList()
         for i in range(num_layers):
             layer_in = in_dim if i == 0 else hidden_dim
 
-            # HiGCN layer
-            higcn = HiGCN(layer_in, hidden_dim, hidden_dim, static_adj,
-                          dropout=dropout, graph_mode=graph_mode,
-                          use_graph_conv=use_graph_conv,
-                          use_edge_gate=use_edge_gate)
+            # STHetGCN layer
+            sthet_gcn = STHetGCN(layer_in, hidden_dim, hidden_dim, static_adj,
+                                 dropout=dropout, graph_mode=graph_mode,
+                                 use_graph_conv=use_graph_conv,
+                                 use_edge_gate=use_edge_gate)
 
             # TCN layer
             tcn = None
@@ -43,7 +43,7 @@ class ExpertModel(nn.Module):
                 )
 
             self.layers.append(nn.ModuleDict({
-                'higcn': higcn,
+                'sthet_gcn': sthet_gcn,
                 'tcn': tcn if tcn is not None else nn.Identity()
             }))
 
@@ -57,8 +57,8 @@ class ExpertModel(nn.Module):
         """
         h = x
         for layer in self.layers:
-            # Apply HiGCN
-            h = layer['higcn'](h, adj_mask)
+            # Apply STHetGCN
+            h = layer['sthet_gcn'](h, adj_mask)
             # Apply TCN
             if self.use_tcn:
                 h = layer['tcn'](h)
@@ -127,7 +127,7 @@ class NMoE(nn.Module):
         else:
             node_repr = node_mean
 
-        # Apply linear transformation + activation (σ in paper Eq. 6)
+        # Apply linear transformation + activation (蟽 in paper Eq. 6)
         node_repr = self.node_repr_gcn(node_repr)  # (N, 1) -> (N, hidden_dim)
 
         # Z-score normalization
@@ -231,9 +231,9 @@ class NMoE(nn.Module):
         return out
 
 
-class HiMoE(nn.Module):
+class STHetMoE(nn.Module):
     """
-    Complete HiMoE model for spatial-temporal forecasting
+    Complete STHet-MoE model for spatio-temporal forecasting
     """
     def __init__(self, num_nodes, in_dim, hidden_dim, static_adj, num_experts=14,
                  num_layers=4, input_len=30, output_len=15,
@@ -241,7 +241,7 @@ class HiMoE(nn.Module):
                  dropout=0.3, temperature=1.0, out_dim=1,
                  graph_mode='dynamic', use_moe=True, use_graph_conv=True,
                  use_tcn=True, use_edge_gate=True, use_routing_mask=True):
-        super(HiMoE, self).__init__()
+        super(STHetMoE, self).__init__()
         self.num_nodes = num_nodes
         self.in_dim = in_dim
         self.out_dim = out_dim
@@ -282,8 +282,8 @@ class HiMoE(nn.Module):
         h = self.nmoe(x_emb)  # (B, T, N, hidden_dim)
 
         # Aggregate temporal info: recent state + global context (cf. ST-MoE)
-        h_recent = h[:, -1, :, :]      # (B, N, hidden_dim) — last step
-        h_context = h.mean(dim=1)      # (B, N, hidden_dim) — mean over all T
+        h_recent = h[:, -1, :, :]      # (B, N, hidden_dim), last step
+        h_context = h.mean(dim=1)      # (B, N, hidden_dim), mean over all T
         h_agg = h_recent + h_context   # (B, N, hidden_dim)
 
         # Project to output

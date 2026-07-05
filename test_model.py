@@ -2,7 +2,7 @@
 Quick smoke test to verify that the model can be instantiated and run.
 """
 import torch
-from models.himoe import HiMoE
+from models.sthet_moe import STHetMoE
 
 
 def main():
@@ -17,8 +17,8 @@ def main():
 
     static_adj = torch.eye(num_nodes)
 
-    print("Creating HiMoE model...")
-    model = HiMoE(
+    print("Creating STHet-MoE model...")
+    model = STHetMoE(
         num_nodes=num_nodes,
         in_dim=in_dim,
         hidden_dim=hidden_dim,

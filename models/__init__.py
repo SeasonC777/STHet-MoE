@@ -1,14 +1,14 @@
 """
 Models package initialization
 """
-from .higcn import HiGCN
+from .sthet_gcn import STHetGCN
 from .tcn import TemporalConvNet
-from .himoe import HiMoE, NMoE, ExpertModel
+from .sthet_moe import STHetMoE, NMoE, ExpertModel
 
 __all__ = [
-    'HiGCN',
+    'STHetGCN',
     'TemporalConvNet',
-    'HiMoE',
+    'STHetMoE',
     'NMoE',
     'ExpertModel'
 ]

@@ -1,5 +1,5 @@
 """
-HiGCN: Heterogeneity-Informed Graph Convolutional Network
+STHetGCN: Spatio-Temporal Heterogeneity-Aware Graph Convolutional Network
 """
 import torch
 import torch.nn as nn
@@ -7,15 +7,15 @@ import torch.nn.functional as F
 import math
 
 
-class HiGCN(nn.Module):
+class STHetGCN(nn.Module):
     """
-    Heterogeneity-Informed Graph Convolutional Network
+    Spatio-temporal heterogeneity-aware graph convolutional network
     Handles trend heterogeneity through multi-graph fusion
     """
     def __init__(self, in_dim, hidden_dim, out_dim, static_adj, mlp_hidden=8,
                  dropout=0.3, graph_mode='dynamic', use_graph_conv=True,
                  use_edge_gate=True):
-        super(HiGCN, self).__init__()
+        super(STHetGCN, self).__init__()
         self.in_dim = in_dim
         self.hidden_dim = hidden_dim
         self.out_dim = out_dim

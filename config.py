@@ -1,5 +1,5 @@
 """
-Configuration file for HiMoE model
+Configuration file for STHet-MoE model
 """
 import argparse
 
@@ -10,7 +10,7 @@ def parse_int_tuple(value):
     return values[0] if len(values) == 1 else values
 
 def get_config():
-    parser = argparse.ArgumentParser(description='HiMoE for Ocean Chlorophyll Prediction')
+    parser = argparse.ArgumentParser(description='STHet-MoE for Ocean Chlorophyll Prediction')
 
     # Data parameters
     parser.add_argument('--dataset', type=str, default='bohai',
@@ -40,7 +40,7 @@ def get_config():
                         choices=['dynamic', 'static', 'fused'],
                         help='Graph mode: dynamic, static, or fused dynamic+static adjacency')
     parser.add_argument('--no_moe', action='store_true', help='Ablation: use a single expert without MoE gating')
-    parser.add_argument('--no_graph_conv', action='store_true', help='Ablation: disable HiGCN graph convolution')
+    parser.add_argument('--no_graph_conv', action='store_true', help='Ablation: disable STHetGCN graph convolution')
     parser.add_argument('--no_tcn', action='store_true', help='Ablation: disable TCN layers')
     parser.add_argument('--no_edge_gate', action='store_true',
                         help='Ablation: remove edge-level gating from fused dynamic+static graph fusion')

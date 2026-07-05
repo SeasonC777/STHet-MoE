@@ -1,5 +1,5 @@
 """
-Training script for HiMoE model
+Training script for STHet-MoE model
 """
 import os
 import sys
@@ -14,7 +14,7 @@ from datetime import datetime
 from config import get_config
 from utils.data_loader import load_data
 from utils.metrics import fairness_loss, compute_all_metrics
-from models.himoe import HiMoE
+from models.sthet_moe import STHetMoE
 
 
 def output_stem(dataset, exp_name):
@@ -250,7 +250,7 @@ def main():
         f"no_routing_mask={args.no_routing_mask}"
     )
     print(f"Temporal TCN: kernel_size={args.kernel_size}, dilations={args.temporal_dilations}")
-    model = HiMoE(
+    model = STHetMoE(
         num_nodes=num_nodes,
         in_dim=num_features,
         hidden_dim=args.hidden_dim,

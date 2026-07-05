@@ -1,5 +1,5 @@
 """
-Compute per-horizon metrics from saved HiMoE predictions.
+Compute per-horizon metrics from saved STHet-MoE predictions.
 """
 import argparse
 import json
