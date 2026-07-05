@@ -1,5 +1,7 @@
 # STHet-MoE
 
+Spatio-Temporal Heterogeneity-Aware Mixture-of-Experts for Satellite-Derived Marine Chlorophyll-a Forecasting
+
 Core implementation for the paper code of STHet-MoE, a heterogeneous mixture-of-experts model for fair spatial-temporal forecasting on ocean chlorophyll concentration data.
 
 The repository keeps only the source code needed for model definition, training, evaluation, and ablation runs. Datasets, checkpoints, logs, prediction archives, and generated figures are intentionally excluded.
